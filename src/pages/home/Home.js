@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useQuotesContext } from '../../context/quotes/QuotesContext';
 import styles from './Home.module.css';
+import Header from '../../components/header/Header';
+import Button from '../../components/header/UI/button/Button';
 
 const url = 'https://api.kanye.rest/';
 
@@ -10,16 +11,12 @@ function Home() {
     
     return (
         <div>
-            <header className={styles.header}>
-                {/* <a href='receiptshtml'>Reports</a> */}
-                <Link to='receipts'>Reports</Link>
-                <button className='btn-logout js-btn-logout'>Sign Out</button>
-            </header>
+            <Header to='reports' label='Reports'/>
             <main className={styles.quotes}>
                 <div className="quotes-container js-quotes-container">
                     {quotes.map((quote, index) => <Quote key={index} quote={quote.quote} />)}
                 </div>
-                <button onClick={() => fetchTasks()}>GET NEW QUOTES</button>
+                <Button onClick={() => fetchTasks()}>GET NEW QUOTES</Button>
             </main>
         </div>
     );

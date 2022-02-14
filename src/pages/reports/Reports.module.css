@@ -1,0 +1,12 @@
+.btn-remove-quotes {
+    position: fixed;
+    top: 50%;
+    right: 48px;
+}
+
+.reports__select-all-container {
+    text-align: right;
+    position: fixed;
+    top: calc(50% - 40px);
+    right: 48px;
+}
