@@ -1,0 +1,15 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 70px;
+    background-color: lightcoral;
+}
+
+.quotes-container {
+    margin-bottom: 24px;
+}
+
+.quotes {
+    text-align: center;
+}
