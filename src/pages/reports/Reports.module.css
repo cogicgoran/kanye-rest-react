@@ -10,3 +10,24 @@
     top: calc(50% - 40px);
     right: 48px;
 }
+
+.history__quote {
+    width: 400px;
+    margin: 0 auto 24px auto;
+    padding: 1rem;
+    border: 1px solid red;
+    border-radius: 1em;
+    text-align: center;
+}
+
+.history__quote > * {
+    margin: 12px 0;
+}
+
+.quoted::after {
+    content: close-quote;
+}
+
+.quoted::before {
+    content: open-quote;
+}

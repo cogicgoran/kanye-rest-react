@@ -3,15 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import QuotesContextProvider from './context/quotes/QuotesContext';
 import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <QuotesContextProvider>
         <App />
-      </QuotesContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
