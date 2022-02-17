@@ -16,7 +16,7 @@ function Header({to, label, fromReports}) {
     return (
         <header className={styles.header}>
             <Link to={to} state={{fromReports}}>{label}</Link>
-            <Button onClick={handleLogoutClick}>Sign Out</Button>
+            <Button className={styles['btn-logout']} onClick={handleLogoutClick}>Sign Out</Button>
         </header>
     );
 };

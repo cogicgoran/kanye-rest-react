@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 import styles from './Login.module.css';
 import { Link } from 'react-router-dom';
 import Button from '../../components/header/UI/button/Button';
@@ -16,11 +16,13 @@ function Login() {
         const password = passwordRef.current.value;
         const users = JSON.parse(localStorage.getItem('users')) || [];
         const foundUser = users.find(user => user.email === email && user.password === password);
-        if( foundUser ) {
+        if (foundUser) {
             localStorage.setItem('current-user', JSON.stringify({ email }));
             navigate(PATHS.HOME);
+            return;
         }
         // Display some errors
+        alert("Invalid credentials");
     };
 
     return (

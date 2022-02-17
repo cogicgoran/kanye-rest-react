@@ -1,11 +1,10 @@
 export function validateInputs({email, password, passwordConfirm}, errors){
-    console.log(email, errors);
     validateEmailExists(email, errors);
     validatePassword(password, errors);
     validateConfirmPassword(password, passwordConfirm, errors)
 }
 
-function validateEmailExists(email, users, errors) {
+function validateEmailExists(email, errors) {
     const regExpSimpleEmail = /\S+@\S+\.\S+/;
     if (!regExpSimpleEmail.test(email)) {
         errors.isError = true;
@@ -13,11 +12,16 @@ function validateEmailExists(email, users, errors) {
         errors.email.errors.push("Invalid email");
     }
 
-    // const matchingEmail = users.find(user => user.email === email);
-    // if (matchingEmail) {
-    //     createValidatorError(emailWrapper, "Email already exists");
-    //     setIsErrorTrue();
-    // };
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+
+    const matchingEmail = users.find(user => user.email === email);
+    if (matchingEmail) {
+        // createValidatorError(emailWrapper, "Email already exists");
+        // setIsErrorTrue();
+        errors.isError = true;
+        errors.email.isError = true;
+        errors.email.errors.push("Email already exists");
+    };
 };
 
 function validatePassword(password, errors) {

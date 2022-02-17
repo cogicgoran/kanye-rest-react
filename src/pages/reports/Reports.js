@@ -38,14 +38,15 @@ function Reports() {
     }
 
     function handleRemoveQuotes(){
-        console.log("helo")
         const last5Quotes = JSON.parse(localStorage.getItem("previous-quotes")) || [];
         checkedIds.forEach(checkedId => {
             quotes.splice(quotes.indexOf(quotes.find(quote => {
-                return quote.id == checkedId;
+                console.log(typeof quote.id, typeof checkedId)
+                return quote.id === checkedId;
             })), 1);
             const item = last5Quotes.find(item => {
-                return item.id == checkedId;
+                console.log(typeof item.id, typeof checkedId)
+                return item.id === checkedId;
             })
             const id = last5Quotes.indexOf(item);
             if (id !== -1) {

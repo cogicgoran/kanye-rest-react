@@ -5,3 +5,8 @@
     min-height: 70px;
     background-color: lightcoral;
 }
+
+.btn-logout {
+    position: absolute;
+    right: 24px;
+}
