@@ -6,6 +6,36 @@
     background-color: lightcoral;
 }
 
+.header a {
+    position: relative;
+    text-decoration: none;
+    color: white;
+    margin: 0 12px;
+    transition: color 200ms;
+}
+
+.header a:hover {
+    color:black
+}
+
+.header a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    width: 100%;
+    left: 0;
+    height: 2px;
+    background-color: black;
+    transform: scaleX(0);
+    transition: transform 200ms;
+}
+
+.header a:hover::after {
+    transform: scaleX(1);
+}
+
+
+
 .btn-logout {
     position: absolute;
     right: 24px;

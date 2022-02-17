@@ -3,6 +3,8 @@ import Header from '../../components/header/Header';
 import Button from '../../components/header/UI/button/Button';
 import styles from './Reports.module.css';
 import { useReports } from './useReports';
+import { Link } from 'react-router-dom';
+import { PATHS } from '../../helper/Paths';
 
 function Reports() {
     const {quotes, checkedIds, isCheckedSelectAll, onCheckboxChange, handleSelectAllChange, handleRemoveQuotes} = useReports();
@@ -10,7 +12,7 @@ function Reports() {
 
     return (
         <div>
-            <Header to='/' fromReports={true} label='Back' />
+            <Header fromReports={true}/>
             <div>
                 <div className={styles['quote-history-container']}>
                     {quotes.map(quote => <ReportsQuote key={quote.id} onCheckboxChange={onCheckboxChange} {...quote} checked={checkedIds.includes(quote.id)} />)}

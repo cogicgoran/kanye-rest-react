@@ -3,5 +3,6 @@ export const PATHS = {
     REPORTS:'/reports',
     LOGIN:'/login',
     SIGNUP:'/sign-up',
+    WEATHER:'/weather',
     WILDCARD:'/*'
 }

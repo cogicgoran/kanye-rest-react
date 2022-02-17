@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../helper/Paths';
 import { removeCurrentUser } from '../../helper/storage.functions';
 
-function Header({to, label, fromReports}) {
+function Header({fromReports}) {
     const navigate = useNavigate();
 
     function handleLogoutClick(){
@@ -16,7 +16,9 @@ function Header({to, label, fromReports}) {
 
     return (
         <header className={styles.header}>
-            <Link to={to} state={{fromReports}}>{label}</Link>
+            <Link to={PATHS.WEATHER}>WEATHER</Link>
+            <Link to={PATHS.HOME} fromReports={fromReports}>HOME</Link>
+            <Link to={PATHS.REPORTS}>REPORTS</Link>
             <Button className={styles['btn-logout']} onClick={handleLogoutClick}>Sign Out</Button>
         </header>
     );

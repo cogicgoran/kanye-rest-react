@@ -10,7 +10,7 @@ function Home() {
     
     return (
         <div>
-            <Header to={PATHS.REPORTS} label='Reports' />
+            <Header />
             <main className={styles.quotes}>
                 <div className={styles['quotes-container']}>
                     {quotes.map((quote, index) => <Quote key={index} quote={quote.quote} />)}
