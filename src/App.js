@@ -15,8 +15,8 @@ function App() {
   return (
     <React.Fragment>
       <Routes>
-        <Route path='/' element={<ProtectedRoute redirectTo={PATHS.SIGNUP} component={<Home />} />} />
-        <Route path='/reports' element={<ProtectedRoute redirectTo={PATHS.SIGNUP} component={<Reports />} />} />
+        <Route path='/' element={<ProtectedRoute redirectTo={PATHS.SIGNUP} component={Home} />} />
+        <Route path='/reports' element={<ProtectedRoute redirectTo={PATHS.SIGNUP} component={Reports} />} />
         <Route path='/login' element={<Login />}/>
         <Route path='/sign-up' element={<SignUp />}/>
         <Route path='*' element={<Navigate to='/' />}/>

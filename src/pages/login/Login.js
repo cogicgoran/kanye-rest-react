@@ -1,36 +1,35 @@
-import React, {useState} from 'react';
+import React, {useRef} from 'react';
 import styles from './Login.module.css';
 import { Link } from 'react-router-dom';
 import Button from '../../components/header/UI/button/Button';
-
-const initLoginFormSubmitState = {
-    email:"",
-    password:""
-}
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../helper/Paths';
 
 function Login() {
-    const [inputs, setInputs] = useState(initLoginFormSubmitState);
+    const emailRef = useRef();
+    const passwordRef = useRef();
+    const navigate = useNavigate();
 
     function handleSubmit(event) {
-        event.prevetDefault();
+        event.preventDefault();
+        const email = emailRef.current.value;
+        const password = passwordRef.current.value;
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const foundUser = users.find(user => user.email === email && user.password === password);
+        if( foundUser ) {
+            localStorage.setItem('current-user', JSON.stringify({ email }));
+            navigate(PATHS.HOME);
+        }
+        // Display some errors
     };
-
-    function handleChange(event) {
-        setInputs(prevState => {
-            return {
-                ...prevState,
-                [event.target.name]: event.target.value
-            }
-        })
-    }
 
     return (
         <form className={styles['login-form']} onSubmit={handleSubmit}>
             <div className={styles['login-form__field']}>
-                <input className="js-input-email" type="email" name="email" placeholder="example@example.com" required value={inputs.email} onChange={handleChange}/>
+                <input ref={emailRef} type="email" name="email" placeholder="example@example.com" />
             </div>
             <div className={styles['login-form__field']}>
-                <input className="js-input-password" type="password" name="password" placeholder="Password..." required value={inputs.password} onChange={handleChange} />
+                <input ref={passwordRef} type="password" name="password" placeholder="Password..." />
             </div>
             <div className={styles['form-login__controls']}>
                 <Button type='submit'>Sign In</Button>
