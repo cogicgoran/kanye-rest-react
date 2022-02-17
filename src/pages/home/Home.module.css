@@ -1,5 +1,11 @@
 .quotes-container {
+    max-width: 600px;
+    margin: 0 auto;
     margin-bottom: 24px;
+}
+
+.quotes-container > *{
+    margin-top: 12px;
 }
 
 .quotes {

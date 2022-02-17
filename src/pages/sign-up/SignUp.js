@@ -8,20 +8,8 @@ import { getUsers, setCurrentUser, setUsers } from '../../helper/storage.functio
 import { errorDefault } from './SignUp.constans';
 
 function SignUp() {
-  const navigate = useNavigate();
-  const [errors, setErrors] = useState({ ...structuredClone(errorDefault)});
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
-  const buttonRef = useRef();
-  
-  function registerUser(email, password){
-    const users = getUsers();
-    users.push({ email, password });
-    setUsers(users);
-    setCurrentUser(email)
-    navigate(PATHS.HOME);
-  }
+  const [errors, setErrors] = useState({ ...structuredClone(errorDefault) });
+  const { emailRef, passwordRef, passwordConfirmRef, registerUser } = useSignUp();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -38,7 +26,6 @@ function SignUp() {
   };
 
   function handleFocus(event) {
-    console.log(event.target.tagName)
     if (event.target.tagName === 'INPUT' && errors.isError) {
       setErrors({ ...structuredClone(errorDefault) });
     }
@@ -62,7 +49,7 @@ function SignUp() {
         {errors.passwordConfirm.isError && errors.passwordConfirm.errors.map((message, index) => <ErrorMessage key={index} message={message} />)}
       </div>
       <div className={styles['form-register__controls']}>
-        <Button ref={buttonRef} type='submit'>Sign Up</Button>
+        <Button type='submit'>Sign Up</Button>
       </div>
       <div>
         Already have an account? Sign In <Link to='/login'>here</Link>
@@ -73,6 +60,28 @@ function SignUp() {
 
 function ErrorMessage({ message }) {
   return <div className={styles['form-error-validator']}>{message}</div>
+}
+
+function useSignUp() {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const passwordConfirmRef = useRef();
+  const navigate = useNavigate();
+
+  function registerUser(email, password) {
+    const users = getUsers();
+    users.push({ email, password });
+    setUsers(users);
+    setCurrentUser(email)
+    navigate(PATHS.HOME);
+  }
+
+  return {
+    emailRef,
+    passwordRef,
+    passwordConfirmRef,
+    registerUser
+  }
 }
 
 export default SignUp;

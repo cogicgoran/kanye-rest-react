@@ -4,6 +4,10 @@
     right: 48px;
 }
 
+.quote-history-container {
+    margin-top: 24px;
+}
+
 .reports__select-all-container {
     text-align: right;
     position: fixed;

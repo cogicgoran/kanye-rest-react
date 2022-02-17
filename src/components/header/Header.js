@@ -4,12 +4,13 @@ import styles from './Header.module.css';
 import Button from './UI/button/Button';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../helper/Paths';
+import { removeCurrentUser } from '../../helper/storage.functions';
 
 function Header({to, label, fromReports}) {
     const navigate = useNavigate();
 
     function handleLogoutClick(){
-        localStorage.removeItem('current-user');
+        removeCurrentUser();
         navigate(PATHS.LOGIN);
     }
 
