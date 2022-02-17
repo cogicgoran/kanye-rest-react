@@ -4,37 +4,22 @@ import Button from '../../components/header/UI/button/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { validateInputs } from './SignUp.validator';
 import { PATHS } from '../../helper/Paths';
-
-const errorDefault = {
-  isError: false,
-  email: {
-    isError: false,
-    errors: []
-  }, password:
-  {
-    isError: false,
-    errors: []
-  },
-  passwordConfirm:
-  {
-    isError: false,
-    errors: []
-  }
-};
+import { getUsers, setCurrentUser, setUsers } from '../../helper/storage.functions';
+import { errorDefault } from './SignUp.constans';
 
 function SignUp() {
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({ ...structuredClone(errorDefault) });
+  const [errors, setErrors] = useState({ ...structuredClone(errorDefault)});
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const buttonRef = useRef();
   
   function registerUser(email, password){
-    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const users = getUsers();
     users.push({ email, password });
-    localStorage.setItem('users', JSON.stringify(users));
-    localStorage.setItem('current-user', JSON.stringify({ email }));
+    setUsers(users);
+    setCurrentUser(email)
     navigate(PATHS.HOME);
   }
 
@@ -53,7 +38,8 @@ function SignUp() {
   };
 
   function handleFocus(event) {
-    if (errors.isError) {
+    console.log(event.target.tagName)
+    if (event.target.tagName === 'INPUT' && errors.isError) {
       setErrors({ ...structuredClone(errorDefault) });
     }
   };

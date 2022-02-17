@@ -1,3 +1,5 @@
+import { getUsers } from "../../helper/storage.functions";
+
 export function validateInputs({email, password, passwordConfirm}, errors){
     validateEmailExists(email, errors);
     validatePassword(password, errors);
@@ -11,13 +13,10 @@ function validateEmailExists(email, errors) {
         errors.email.isError = true;
         errors.email.errors.push("Invalid email");
     }
-
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-
+    // const users = JSON.parse(localStorage.getItem('users')) || [];
+    const users = getUsers();
     const matchingEmail = users.find(user => user.email === email);
     if (matchingEmail) {
-        // createValidatorError(emailWrapper, "Email already exists");
-        // setIsErrorTrue();
         errors.isError = true;
         errors.email.isError = true;
         errors.email.errors.push("Email already exists");
