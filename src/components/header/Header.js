@@ -17,7 +17,7 @@ function Header({fromReports}) {
     return (
         <header className={styles.header}>
             <Link to={PATHS.WEATHER}>WEATHER</Link>
-            <Link to={PATHS.HOME} fromReports={fromReports}>HOME</Link>
+            <Link to={PATHS.HOME} state={{fromReports:fromReports}}>HOME</Link>
             <Link to={PATHS.REPORTS}>REPORTS</Link>
             <Button className={styles['btn-logout']} onClick={handleLogoutClick}>Sign Out</Button>
         </header>
