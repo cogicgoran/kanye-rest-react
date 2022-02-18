@@ -1,0 +1,9 @@
+.weather {
+    width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.weather__icon svg {
+    width: 160px;
+}
