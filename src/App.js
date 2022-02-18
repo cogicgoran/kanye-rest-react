@@ -15,8 +15,8 @@ import { getCurrentUser } from './helper/storage.functions';
 
 function App() {
   const user = getCurrentUser();
-  const {pathname} = useLocation();
-  console.log(user);
+  const { pathname } = useLocation();
+  
   return (
     <React.Fragment>
         {user && <Header fromReports={pathname === PATHS.REPORTS}/>}

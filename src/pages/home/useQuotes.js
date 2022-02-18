@@ -22,8 +22,8 @@ export function useQuotes() {
     function appendQuoteToDisplay(quote) {
         setQuotes(prevQuotes => {
             return [...prevQuotes, quote]
-        })
-    }
+        });
+    };
 
     function updateStorage(quotesStorage, quote) {
         const matchedQuote = quotesStorage.find(storedQuote => {
@@ -47,13 +47,13 @@ export function useQuotes() {
             quotesStorage.push(newQuote);
             return newQuote;
         }
-    }
+    };
 
     function handleNewQuotes(quote) {
         const quotesStorage = getQuotes();
+        const updatedQuote = updateStorage(quotesStorage, quote);
 
         appendQuoteToDisplay(quote);
-        const updatedQuote = updateStorage(quotesStorage, quote);
         fetchQuotes.push({quote: updatedQuote.body, id: updatedQuote.id});
         fetchCounter++;
         if (fetchCounter === 5) {
@@ -63,7 +63,7 @@ export function useQuotes() {
         }
         localStorage.setItem("quotes", JSON.stringify(quotesStorage));
         storageSetQuotes(quotesStorage);
-    }
+    };
 
     function getPromiseArray(n = 5) {
         const promiseArray = [];
@@ -79,7 +79,7 @@ export function useQuotes() {
                 }));
         };
         return promiseArray;
-    }
+    };
 
     async function fetchTasks() {
         setQuotes([]);
@@ -88,7 +88,7 @@ export function useQuotes() {
         quotes.forEach(quote => {
             handleNewQuotes(quote);
         });
-    }
+    };
 
     return { quotes, fetchTasks };
-}
+};

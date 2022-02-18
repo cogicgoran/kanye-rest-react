@@ -1,10 +1,7 @@
 import React from 'react';
-import Header from '../../components/header/Header';
 import Button from '../../components/header/UI/button/Button';
 import styles from './Reports.module.css';
 import { useReports } from './useReports';
-import { Link } from 'react-router-dom';
-import { PATHS } from '../../helper/Paths';
 
 function Reports() {
     const {quotes, checkedIds, isCheckedSelectAll, onCheckboxChange, handleSelectAllChange, handleRemoveQuotes} = useReports();

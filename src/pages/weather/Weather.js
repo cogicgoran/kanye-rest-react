@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import Header from '../../components/header/Header';
 import DisplayWeather from '../../components/weather/DisplayWeather';
 import styles from './Weather.module.css';
 
