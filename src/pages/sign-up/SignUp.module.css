@@ -1,6 +1,6 @@
 .form-register {
     width: 500px;
-    margin: 0 auto;
+    margin: 24px auto 0;
     padding: 1em;
     border: 2px solid rgb(248, 150, 133);
     background-color: rgb(235, 190, 190);
@@ -16,6 +16,7 @@
 .form-register__input label {
     display: inline-block;
     width: 150px;
+    margin-right: 4px;
     text-align: right;
 }
 

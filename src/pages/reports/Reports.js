@@ -12,7 +12,6 @@ function Reports() {
 
     return (
         <div>
-            <Header fromReports={true}/>
             <div>
                 <div className={styles['quote-history-container']}>
                     {quotes.map(quote => <ReportsQuote key={quote.id} onCheckboxChange={onCheckboxChange} {...quote} checked={checkedIds.includes(quote.id)} />)}

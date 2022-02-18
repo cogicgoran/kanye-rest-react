@@ -9,9 +9,8 @@ function Weather() {
 
     return (
         <div>
-            <Header />
             <div className={styles['weather']}>
-            <h2>Weather</h2>
+                <h2>Weather</h2>
                 {isLoading && "Loading..."}
                 {!isLoading && isError && isError.message}
                 {!isLoading && !isError && currentWeather && <DisplayWeather weather={currentWeather} />}

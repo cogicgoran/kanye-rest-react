@@ -1,6 +1,6 @@
 .login-form {
     max-width: 400px;
-    margin: 0 auto;
+    margin: 24px auto 0;
     padding: 1em;
     border-radius: 1em;
     border: 2px solid rgb(248, 150, 133);
