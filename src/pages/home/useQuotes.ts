@@ -2,16 +2,17 @@ import { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import { getPreviousQuotes, getQuotes, setPreviousQuotes, setQuotes as storageSetQuotes } from '../../helper/storage.functions';
 
-interface ReturnQuotes {
-    quotes:any;
-    fetchTasks:any;
-}
-
 interface Quote {
     quote:string;
     id:number;
     time?: number | undefined;
 }
+
+interface ReturnQuotes {
+    quotes: Array<Quote>;
+    fetchTasks:() => Promise<void>;
+}
+
 
 interface QuoteComplete {
     id: number;

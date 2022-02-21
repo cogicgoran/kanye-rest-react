@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Button.module.css';
 
 type Props = {
-  className: string,
+  className?: string,
   type?: 'submit' | 'button' | 'reset',
   children: React.ReactNode,
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;

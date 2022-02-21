@@ -3,6 +3,10 @@ import styles from './Home.module.css';
 import Button from '../../components/button/Button';
 import { useQuotes } from './useQuotes';
 
+interface Quote {
+    quote: string
+}
+
 function Home() {
     const { quotes, fetchTasks } = useQuotes();
     
@@ -18,8 +22,8 @@ function Home() {
     );
 };
 
-function Quote({ quote }) {
-    return <div>{quote}</div>
-}
+function Quote({ quote }: Quote): JSX.Element   {
+    return <div>{quote}</div>;
+};
 
 export default Home;
