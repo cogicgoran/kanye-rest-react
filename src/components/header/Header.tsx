@@ -6,13 +6,17 @@ import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../helper/Paths';
 import { removeCurrentUser } from '../../helper/storage.functions';
 
-function Header({fromReports}) {
+interface Props {
+    fromReports: boolean;
+}
+
+function Header({fromReports}: Props): JSX.Element {
     const navigate = useNavigate();
 
-    function handleLogoutClick(){
+    function handleLogoutClick(): void{
         removeCurrentUser();
         navigate(PATHS.LOGIN);
-    }
+    };
 
     return (
         <header className={styles.header}>
