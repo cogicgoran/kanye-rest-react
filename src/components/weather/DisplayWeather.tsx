@@ -1,10 +1,15 @@
 import React from 'react';
 import * as svgs from '../../assets/svg/weather';
 import styles from './DisplayWeather.module.css';
+import { DisplayWeatherProp } from '../../interfaces/interfaces'
 
-function DisplayWeather({ weather }) {
-    function getIcon(weather) {
-        switch (weather) {
+interface Props {
+    weather : DisplayWeatherProp;
+}
+
+function DisplayWeather({ weather }: Props): JSX.Element {
+    function getIcon(weatherName: string) {
+        switch (weatherName) {
             case 'Clear': return <svgs.SVGCloudyDay />
             case 'Clouds': return <svgs.SVGCloudy />
             case 'Rain': return <svgs.SVGRainy3 />

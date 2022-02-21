@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import DisplayWeather from '../../components/weather/DisplayWeather.js';
+import DisplayWeather from '../../components/weather/DisplayWeather';
 import styles from './Weather.module.css';
+import { DisplayWeatherProp } from '../../interfaces/interfaces';
 
 interface Coordinates {
     latitude: number;
@@ -16,13 +17,10 @@ interface Error {
     message: string;
 };
 
-type WeatherType = object | null;
-type ErrorNull = Error | null;
-
 interface WeatherObject {
-    currentWeather: WeatherType;
+    currentWeather: DisplayWeatherProp | null;
     isLoading: boolean;
-    isError: ErrorNull;
+    isError: Error | null;
 }
 
 function Weather(): JSX.Element {
@@ -42,9 +40,9 @@ function Weather(): JSX.Element {
 
 
 function useWeather(): WeatherObject {
-    const [currentWeather, setCurrentWeather] = useState<WeatherType>(null);
+    const [currentWeather, setCurrentWeather] = useState<DisplayWeatherProp | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState<ErrorNull>(null);
+    const [isError, setIsError] = useState<Error | null>(null);
 
     function locationSuccess(position: CoordinatesContainer): void {
         const { latitude, longitude } = position.coords;
@@ -56,8 +54,8 @@ function useWeather(): WeatherObject {
         setIsLoading(true);
         setIsError(null);
         try {
-            const data = await axios.get(url);
-            setCurrentWeather(data.data);
+            const response = await axios.get(url);
+            setCurrentWeather(response.data);
         }
         catch (error: any) {
             setIsError(error);
