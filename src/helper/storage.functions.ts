@@ -7,7 +7,16 @@ export function getUsers() {
     return JSON.parse(localStorage.getItem('users') as string) || [];
 };
 
-export function getQuotes() {
+interface QuoteComplete {
+    id: number;
+    count: number;
+    time?: number;
+    body: string;
+    createdAt: Date;
+    updatedAt: Date | null;
+}
+
+export function getQuotes(): Array<QuoteComplete> {
     return JSON.parse(localStorage.getItem("quotes") as string) || [];
 };
 

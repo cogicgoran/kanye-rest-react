@@ -2,30 +2,56 @@ import { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import { getPreviousQuotes, getQuotes, setPreviousQuotes, setQuotes as storageSetQuotes } from '../../helper/storage.functions';
 
-export function useQuotes() {
+interface ReturnQuotes {
+    quotes:any;
+    fetchTasks:any;
+}
+
+interface Quote {
+    quote:string;
+    id:number;
+    time?: number | undefined;
+}
+
+interface QuoteComplete {
+    id: number;
+    count: number;
+    time?: number;
+    body: string;
+    createdAt: Date;
+    updatedAt: Date | null;
+}
+
+interface LocationPath {
+    state: {
+        fromReports: string;
+    }
+}
+
+export function useQuotes():ReturnQuotes {
     const url = 'https://api.kanye.rest/';
-    const [quotes, setQuotes] = useState([]);
-    const location = useLocation();
-    let fetchCounter = 0;
-    let fetchQuotes = [];
+    const [quotes, setQuotes] = useState<Array<Quote>>([]);
+    const location = useLocation() as LocationPath;
+    let fetchCounter: number = 0;
+    let fetchQuotes: Array<Quote> = [];
 
     useEffect(() => {
         const allQuotes = getQuotes();
 
-        if(location.state?.fromReports && allQuotes.length > 4) {
+        if(location && location.state?.fromReports && allQuotes.length > 4) {
             setQuotes(getPreviousQuotes());
         } else {
             fetchTasks();
         }
     }, []);
 
-    function appendQuoteToDisplay(quote) {
+    function appendQuoteToDisplay(quote: Quote): void {
         setQuotes(prevQuotes => {
             return [...prevQuotes, quote]
         });
     };
 
-    function updateStorage(quotesStorage, quote) {
+    function updateStorage(quotesStorage: QuoteComplete[], quote: Quote): QuoteComplete {
         const matchedQuote = quotesStorage.find(storedQuote => {
             return storedQuote.body === quote.quote;
         });
@@ -36,7 +62,7 @@ export function useQuotes() {
             return matchedQuote
 
         } else {
-            const newQuote = {
+            const newQuote: QuoteComplete = {
                 body: quote.quote,
                 count: 1,
                 createdAt: new Date(),
@@ -49,7 +75,7 @@ export function useQuotes() {
         }
     };
 
-    function handleNewQuotes(quote) {
+    function handleNewQuotes(quote : Quote): void {
         const quotesStorage = getQuotes();
         const updatedQuote = updateStorage(quotesStorage, quote);
 
@@ -65,13 +91,13 @@ export function useQuotes() {
         storageSetQuotes(quotesStorage);
     };
 
-    function getPromiseArray(n = 5) {
-        const promiseArray = [];
+    function getPromiseArray(numberOfFetches: number = 5): Promise<any>[] {
+        const promiseArray:Promise<any>[] = [];
         let timeBefore = Date.now();
-        for (let i = 0; i < n; i++) {
+        for (let i = 0; i < numberOfFetches; i++) {
             promiseArray.push(fetch(url)
-                .then(res => res.json())
-                .then(quote => {
+                .then((res) => res.json())
+                .then((quote: Quote): Quote => {
                     const now = Date.now();
                     quote.time = now - timeBefore;
                     timeBefore = now;
@@ -81,10 +107,10 @@ export function useQuotes() {
         return promiseArray;
     };
 
-    async function fetchTasks() {
+    async function fetchTasks(): Promise<void> {
         setQuotes([]);
         const quotesToBeFetched = 5;
-        const quotes = await Promise.all(getPromiseArray(quotesToBeFetched));
+        const quotes = await Promise.all(getPromiseArray(quotesToBeFetched)) as Quote[];
         quotes.forEach(quote => {
             handleNewQuotes(quote);
         });

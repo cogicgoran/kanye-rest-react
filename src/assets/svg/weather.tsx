@@ -12,51 +12,51 @@ import { ReactComponent as Snowy2} from './snowy-4.svg';
 import { ReactComponent as Snowy3} from './snowy-6.svg';
 import { ReactComponent as Thunder} from './thunder.svg';
 
-export function SVGDay():React.ReactNode {
+export function SVGDay():JSX.Element {
     return <Day />;
 }
 
-export function SVGNight():React.ReactNode {
+export function SVGNight():JSX.Element {
     return <Night />;
 }
 
-export function SVGCloudy():React.ReactNode {
+export function SVGCloudy():JSX.Element {
     return <Cloudy />;
 }
 
-export function SVGCloudyDay():React.ReactNode {
+export function SVGCloudyDay():JSX.Element {
     return <CloudyDay />;
 }
 
-export function SVGCloudyNight():React.ReactNode {
+export function SVGCloudyNight():JSX.Element {
     return <CloudyNight />;
 }
 
-export function SVGRainy1():React.ReactNode {
+export function SVGRainy1():JSX.Element {
     return <Rainy1 />;
 }
 
-export function SVGRainy2():React.ReactNode {
+export function SVGRainy2():JSX.Element {
     return <Rainy2 />;
 }
 
-export function SVGRainy3():React.ReactNode {
+export function SVGRainy3():JSX.Element {
     return <Rainy3 />;
 }
 
-export function SVGSnowy1():React.ReactNode {
+export function SVGSnowy1():JSX.Element {
     return <Snowy1 />;
 }
 
-export function SVGSnowy2():React.ReactNode {
+export function SVGSnowy2():JSX.Element {
     return <Snowy2 />;
 }
 
-export function SVGSnowy3():React.ReactNode {
+export function SVGSnowy3():JSX.Element {
     return <Snowy3 />;
 }
 
-export function SVGThunder():React.ReactNode {
+export function SVGThunder():JSX.Element {
     return <Thunder />;
 }
 
