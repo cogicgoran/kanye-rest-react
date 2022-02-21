@@ -5,7 +5,7 @@ type Props = {
   className?: string,
   type?: 'submit' | 'button' | 'reset',
   children: React.ReactNode,
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 function Button({ className, type, children, onClick }: Props): JSX.Element {

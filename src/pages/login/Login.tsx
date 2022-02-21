@@ -6,13 +6,17 @@ import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../helper/Paths';
 import { findUserByEmailAndPassword, setCurrentUser } from '../../helper/storage.functions';
 
-function Login() {
-    const emailRef = useRef();
-    const passwordRef = useRef();
+function Login(): JSX.Element {
+    const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
 
-    function handleSubmit(event) {
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
+        if (emailRef === null || passwordRef === null || emailRef.current == null || passwordRef.current === null){
+            alert("Some error with useRef references");  
+            return;
+        }
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
         const foundUser = findUserByEmailAndPassword(email, password);

@@ -3,9 +3,9 @@ import Button from '../../components/button/Button';
 import styles from './Reports.module.css';
 import { useReports } from './useReports';
 
-function Reports() {
-    const {quotes, checkedIds, isCheckedSelectAll, onCheckboxChange, handleSelectAllChange, handleRemoveQuotes} = useReports();
-    const buttonClasses = checkedIds.length === 0 ? [styles['btn-remove-quotes'], 'hidden'].join(" ") : styles['btn-remove-quotes'];
+function Reports(): JSX.Element {
+    const { quotes, checkedIds, isCheckedSelectAll, onCheckboxChange, handleSelectAllChange, handleRemoveQuotes } = useReports();
+    const buttonClasses: string = checkedIds.length === 0 ? [styles['btn-remove-quotes'], 'hidden'].join(" ") : styles['btn-remove-quotes'];
 
     return (
         <div>
@@ -25,8 +25,19 @@ function Reports() {
     );
 };
 
-function ReportsQuote({ body, count, createdAt, updatedAt, time: timeToFetch, id, onCheckboxChange, checked }) {
-    function handleChange(event) {
+interface ReportsQuoteProps {
+    id: number;
+    count: number;
+    time?: number;
+    body: string;
+    createdAt: Date;
+    updatedAt: Date | null;
+    onCheckboxChange: (id: number, checked: boolean) => void;
+    checked: boolean;
+}
+
+function ReportsQuote({ body, count, createdAt, updatedAt, time: timeToFetch, id, onCheckboxChange, checked }: ReportsQuoteProps): JSX.Element {
+    function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
         onCheckboxChange(id, event.target.checked);
     }
 
