@@ -1,21 +1,28 @@
 import { getUsers } from "../../helper/storage.functions";
+import { SignUpErrors } from './SignUp.interfaces';
+import { User } from '../../helper/user.interfaces';
 
-export function validateInputs({email, password, passwordConfirm}, errors){
-    validateEmailExists(email, errors);
-    validatePassword(password, errors);
-    validateConfirmPassword(password, passwordConfirm, errors)
+interface InputsAll {
+    email: string;
+    password: string;
+    passwordConfirm: string;
 }
 
-function validateEmailExists(email, errors) {
+export function validateInputs({email, password, passwordConfirm}: InputsAll, errors: SignUpErrors){
+    validateEmailExists(email, errors);
+    validatePassword(password, errors);
+    validateConfirmPassword(password, passwordConfirm, errors);
+}
+
+function validateEmailExists(email: string, errors: SignUpErrors) {
     const regExpSimpleEmail = /\S+@\S+\.\S+/;
     if (!regExpSimpleEmail.test(email)) {
         errors.isError = true;
         errors.email.isError = true;
         errors.email.errors.push("Invalid email");
     }
-    // const users = JSON.parse(localStorage.getItem('users')) || [];
     const users = getUsers();
-    const matchingEmail = users.find(user => user.email === email);
+    const matchingEmail = users.find((user: User) => user.email === email);
     if (matchingEmail) {
         errors.isError = true;
         errors.email.isError = true;
@@ -23,7 +30,7 @@ function validateEmailExists(email, errors) {
     };
 };
 
-function validatePassword(password, errors) {
+function validatePassword(password: string, errors: SignUpErrors) {
     if (password.length < 8) {
         errors.isError = true;
         errors.password.isError = true;
@@ -40,7 +47,7 @@ function validatePassword(password, errors) {
     }
 };
 
-function validateConfirmPassword(password, passwordConfirm, errors) {
+function validateConfirmPassword(password: string, passwordConfirm: string, errors: SignUpErrors) {
     if (password !== passwordConfirm) {
         errors.isError = true;
         errors.passwordConfirm.isError = true;

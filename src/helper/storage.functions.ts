@@ -1,9 +1,6 @@
-interface User {
-    email: string,
-    password: string
-};
+import { User } from "./user.interfaces";
 
-export function getUsers() {
+export function getUsers(): User[] {
     return JSON.parse(localStorage.getItem('users') as string) || [];
 };
 

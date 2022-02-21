@@ -1,4 +1,6 @@
-export const errorDefault = {
+import { SignUpErrors } from './SignUp.interfaces'
+
+export const errorDefault: SignUpErrors = {
     isError: false,
     email: {
         isError: false,
