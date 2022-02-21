@@ -1,11 +1,11 @@
 import React from 'react';
 import * as svgs from '../../assets/svg/weather';
 import styles from './DisplayWeather.module.css';
-import { DisplayWeatherProp } from '../../interfaces/interfaces'
+import { DisplayWeatherProp } from '../../interfaces/interfaces';
 
 interface Props {
-    weather : DisplayWeatherProp;
-}
+    weather: DisplayWeatherProp;
+};
 
 function DisplayWeather({ weather }: Props): JSX.Element {
     function getIcon(weatherName: string) {
@@ -32,6 +32,6 @@ function DisplayWeather({ weather }: Props): JSX.Element {
             {getIcon(weather.weather[0].main)}
         </div>
     </React.Fragment>
-}
+};
 
 export default DisplayWeather;

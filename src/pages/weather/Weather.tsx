@@ -4,14 +4,12 @@ import DisplayWeather from '../../components/weather/DisplayWeather';
 import styles from './Weather.module.css';
 import { DisplayWeatherProp } from '../../interfaces/interfaces';
 
-interface Coordinates {
-    latitude: number;
-    longitude: number;
+interface GeolocationPosition {
+    coords: {
+        latitude: number;
+        longitude: number;
+    }
 }
-
-interface CoordinatesContainer {
-    coords: Coordinates
-};
 
 interface Error {
     message: string;
@@ -38,18 +36,17 @@ function Weather(): JSX.Element {
     );
 };
 
-
 function useWeather(): WeatherObject {
     const [currentWeather, setCurrentWeather] = useState<DisplayWeatherProp | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState<Error | null>(null);
 
-    function locationSuccess(position: CoordinatesContainer): void {
+    function locationSuccess(position: GeolocationPosition): void {
         const { latitude, longitude } = position.coords;
         fetchWeather(latitude, longitude);
     }
-    
-    async function fetchWeather(latitude:number, longitude: number): Promise<void> {
+
+    async function fetchWeather(latitude: number, longitude: number): Promise<void> {
         const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude.toFixed(0)}&lon=${longitude.toFixed(0)}&units=metric&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`;
         setIsLoading(true);
         setIsError(null);
