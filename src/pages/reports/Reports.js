@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../../components/header/UI/button/Button';
+import Button from '../../components/button/Button';
 import styles from './Reports.module.css';
 import { useReports } from './useReports';
 

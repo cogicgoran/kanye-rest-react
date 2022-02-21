@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import styles from './Login.module.css';
 import { Link } from 'react-router-dom';
-import Button from '../../components/header/UI/button/Button';
+import Button from '../../components/button/Button';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../helper/Paths';
 import { findUserByEmailAndPassword, setCurrentUser } from '../../helper/storage.functions';

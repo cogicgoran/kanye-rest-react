@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styles from './SignUp.module.css';
-import Button from '../../components/header/UI/button/Button';
+import Button from '../../components/button/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { validateInputs } from './SignUp.validator';
 import { PATHS } from '../../helper/Paths';

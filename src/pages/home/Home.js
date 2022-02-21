@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Home.module.css';
-import Button from '../../components/header/UI/button/Button';
+import Button from '../../components/button/Button';
 import { useQuotes } from './useQuotes';
 
 function Home() {

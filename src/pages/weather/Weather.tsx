@@ -1,9 +1,23 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import DisplayWeather from '../../components/weather/DisplayWeather';
+import DisplayWeather from '../../components/weather/DisplayWeather.js';
 import styles from './Weather.module.css';
 
-function Weather() {
+interface successLocationObject {
+    coords: {
+        latitude: number;
+        longitude: number;
+    }
+}
+
+interface errorObject {
+    message: string;
+}
+
+type WeatherType = object | null;
+type Error = errorObject | null;
+
+function Weather(): JSX.Element {
     const { currentWeather, isLoading, isError } = useWeather();
 
     return (
@@ -19,36 +33,31 @@ function Weather() {
 };
 
 function useWeather() {
-    const [currentWeather, setCurrentWeather] = useState(null);
+    const [currentWeather, setCurrentWeather] = useState<WeatherType>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(null);
+    const [isError, setIsError] = useState<Error>(null);
 
-    // Istanbul rainy
-    // [61.32, -149.39] = Alaska snowy
-    function locationSuccess(position) {
+    function locationSuccess(position: successLocationObject): void {
         const { latitude, longitude } = position.coords;
-        // const latitude = -21.13;
-        // const longitude = 18.79;
         const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude.toFixed(0)}&lon=${longitude.toFixed(0)}&units=metric&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`;
 
-        async function fetchWeather() {
+        async function fetchWeather(): Promise<void> {
             setIsLoading(true);
             setIsError(null);
             try {
                 const data = await axios.get(url);
                 setCurrentWeather(data.data);
             }
-            catch (error) {
+            catch (error: any) {
                 setIsError(error);
             } finally {
                 setIsLoading(false);
             }
         }
         fetchWeather();
-
     }
 
-    function locationError(error) {
+    function locationError(error: any): void {
         setIsError(error);
     }
 
