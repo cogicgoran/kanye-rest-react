@@ -9,7 +9,7 @@ interface GeolocationPosition {
         latitude: number;
         longitude: number;
     }
-}
+};
 
 interface Error {
     message: string;
@@ -19,7 +19,8 @@ interface WeatherObject {
     currentWeather: DisplayWeatherProp | null;
     isLoading: boolean;
     isError: Error | null;
-}
+    fetchWeather:(lat: number, lon: number, forecast?: "today" | "4-day" | "7-day" | undefined) => Promise<void>;
+};
 
 function Weather(): JSX.Element {
     const { currentWeather, isLoading, isError } = useWeather();
@@ -46,8 +47,23 @@ function useWeather(): WeatherObject {
         fetchWeather(latitude, longitude);
     }
 
-    async function fetchWeather(latitude: number, longitude: number): Promise<void> {
-        const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude.toFixed(0)}&lon=${longitude.toFixed(0)}&units=metric&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`;
+    function getUrl(latitude: number, longitude: number, forecast?: 'today' | '4-day' | '7-day'): string {
+        const latitudeFormated: string = latitude.toFixed(0);
+        const longitudeFormated: string = longitude.toFixed(0);
+        switch(forecast){
+            case 'today':
+                return `http://api.openweathermap.org/data/2.5/weather?lat=${latitudeFormated}&lon=${longitudeFormated}&units=metric&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`;
+            case '4-day':
+                return `http://api.openweathermap.org/data/2.5/forecast/hourly?lat=${latitudeFormated}&lon=${longitudeFormated}&units=metric&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`;
+            case '7-day':
+                return `http://api.openweathermap.org/data/2.5/onecall?lat=${latitudeFormated}&lon=${longitudeFormated}&units=metric&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`;
+            default:
+                return `http://api.openweathermap.org/data/2.5/weather?lat=${latitudeFormated}&lon=${longitudeFormated}&units=metric&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`;
+        }
+    }
+
+    async function fetchWeather(latitude: number, longitude: number, forecast: 'today' | '4-day' | '7-day' = 'today'): Promise<void> {
+        const url = getUrl(latitude, longitude, forecast);
         setIsLoading(true);
         setIsError(null);
         try {
@@ -69,7 +85,7 @@ function useWeather(): WeatherObject {
         navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
     }, []);
 
-    return { currentWeather, isLoading, isError }
+    return { currentWeather, isLoading, isError, fetchWeather }
 }
 
 export default Weather;

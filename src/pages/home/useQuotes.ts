@@ -13,7 +13,6 @@ interface ReturnQuotes {
     fetchTasks:() => Promise<void>;
 }
 
-
 interface QuoteComplete {
     id: number;
     count: number;
