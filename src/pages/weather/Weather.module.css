@@ -1,5 +1,12 @@
 .weather {
-    width: 400px;
+    width: fit-content;
     margin: 0 auto;
     text-align: center;
+}
+
+.weather__boxes-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 900px;
 }

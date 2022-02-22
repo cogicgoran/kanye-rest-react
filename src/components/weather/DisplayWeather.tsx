@@ -1,13 +1,18 @@
 import React from 'react';
 import * as svgs from '../../assets/svg/weather';
 import styles from './DisplayWeather.module.css';
-import { DisplayWeatherProp } from '../../interfaces/interfaces';
+import { DisplayWeatherProp, WeatherForecast } from '../../interfaces/interfaces';
 
 interface Props {
-    weather: DisplayWeatherProp;
+    weather: DisplayWeatherProp | WeatherForecast[];
+    timezone?: string
 };
 
-function DisplayWeather({ weather }: Props): JSX.Element {
+const weekdaysMap = new Map<number, string>(
+    [[0,'Monday'],[1,'Tuesday'],[2,'Wednesday'],[3,'Thursday'],[4,'Friday'],[5,'Saturday'],[6,'Sunday']]
+)
+
+function DisplayWeather({ weather, timezone }: Props): JSX.Element {
     function getIcon(weatherName: string) {
         switch (weatherName) {
             case 'Clear': return <svgs.SVGCloudyDay />
@@ -17,21 +22,53 @@ function DisplayWeather({ weather }: Props): JSX.Element {
             default: return <svgs.SVGDay />
         };
     };
+    
+    const weatherForecast = weather as WeatherForecast[];
+    
+    function getWeekday(day: number): string {
+        return weekdaysMap.get(day) as string;
+    };
 
-    return <React.Fragment>
+    if (weatherForecast instanceof Array) {
+        return <React.Fragment>
+            {weatherForecast.map((weather, index): JSX.Element => {
+                const date = new Date(weather.dt*1000);
+                return (<div className={styles['weather__box']} key={index}><div>
+                    {weather.timezone}
+                    {getWeekday(date.getDay())}<br />
+                    {date.toLocaleString()}
+                </div>
+                    <div>
+                        Weather: {weather.weather[0].description}
+                    </div>
+                    <div>
+                        Temperature: <br />
+                        Min:{weather.temp.min}C <br />
+                        Max:{weather.temp.max}C
+                    </div>
+                    <div className={styles['weather__icon']}>
+                        {getIcon(weather.weather[0].main)}
+                    </div></div>)
+            })}
+        </React.Fragment>
+    }
+
+    const weatherNow = weather as DisplayWeatherProp;
+
+    return <div className={styles['weather__box']}>
         <div>
-            {weather.name}
+            {weatherNow.name}
         </div>
         <div>
-            Weather: {weather.weather[0].description}
+            Weather: {weatherNow.weather[0].description}
         </div>
         <div>
-            Temperature: {weather.main.temp}C
+            Temperature: {weatherNow.main.temp}C
         </div>
         <div className={styles['weather__icon']}>
-            {getIcon(weather.weather[0].main)}
+            {getIcon(weatherNow.weather[0].main)}
         </div>
-    </React.Fragment>
+    </div>
 };
 
 export default DisplayWeather;

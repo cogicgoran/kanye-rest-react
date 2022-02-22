@@ -9,6 +9,19 @@ export interface DisplayWeatherProp {
     }
 };
 
+export interface WeatherForecast {
+    timezone: string;
+    dt: number;
+    weather: {
+        main: string;
+        description: string;
+    }[];
+    temp: {
+        max: number;
+        min: number;
+    }
+}
+
 export interface User {
     email: string,
     password: string
@@ -29,3 +42,5 @@ export interface SignUpErrors {
         errors: string[];
     }
 }
+
+export type Forecast = 'today' | '4-day' | '7-day';
