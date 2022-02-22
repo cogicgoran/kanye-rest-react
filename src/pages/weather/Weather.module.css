@@ -2,11 +2,35 @@
     width: fit-content;
     margin: 0 auto;
     text-align: center;
+    box-sizing: border-box;
 }
 
 .weather__boxes-wrapper {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    width: 900px;
+    max-width: 900px;
+}
+
+.weather__options {
+    margin-top: 1em;
+    font-size: 20px;
+}
+
+.weather__options span {
+    display: inline-block;
+    padding: .5em 1em;
+    background-color: #ddd;
+    border-radius: .2em;
+    margin: .1em .3em;
+    transition: background-color 200ms;
+    cursor: pointer;
+}
+
+.weather__options span.active {
+    background-color: #bbb;
+}
+
+.weather__options span:hover {
+    background-color: #bbb;
 }

@@ -1,27 +1,3 @@
-export interface DisplayWeatherProp {
-    name: string;
-    weather: {
-        main: string
-        description: string
-    }[];
-    main: {
-        temp: number;
-    }
-};
-
-export interface WeatherForecast {
-    timezone: string;
-    dt: number;
-    weather: {
-        main: string;
-        description: string;
-    }[];
-    temp: {
-        max: number;
-        min: number;
-    }
-}
-
 export interface User {
     email: string,
     password: string
@@ -43,4 +19,20 @@ export interface SignUpErrors {
     }
 }
 
+export interface WeatherType {
+    city?: string;
+    name: string;
+    description: string;
+    temp?: number;
+    tempMin: number;
+    tempMax: number;
+    dt: number;
+}
+
+export interface WeatherForecast {
+        info:{
+            city_timezone: string;
+        };
+        data:WeatherType[] | WeatherType;
+    };
 export type Forecast = 'today' | '4-day' | '7-day';
