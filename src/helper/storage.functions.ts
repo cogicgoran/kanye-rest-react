@@ -17,8 +17,8 @@ export function getQuotes(): Array<QuoteComplete> {
     return JSON.parse(localStorage.getItem("quotes") as string) || [];
 };
 
-export function getCurrentUser() {
-    return JSON.parse(localStorage.getItem('current-user') as string);
+export function getCurrentUser(): User | null {
+    return JSON.parse(localStorage.getItem('current-user') as string) || null;
 };
 
 export function getPageHistory() {

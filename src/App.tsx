@@ -13,7 +13,7 @@ import { useLocation } from 'react-router-dom';
 import { PATHS } from './helper/Paths';
 import { getCurrentUser } from './helper/storage.functions';
 
-function App() {
+function App(): JSX.Element {
   const user = getCurrentUser();
   const { pathname } = useLocation();
   
