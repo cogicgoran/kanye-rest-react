@@ -1,4 +1,4 @@
-import { User } from "./user.interfaces";
+import { User } from "../interfaces/interfaces";
 
 export function getUsers(): User[] {
     return JSON.parse(localStorage.getItem('users') as string) || [];

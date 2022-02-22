@@ -1,6 +1,6 @@
 import { getUsers } from "../../helper/storage.functions";
-import { SignUpErrors } from './SignUp.interfaces';
-import { User } from '../../helper/user.interfaces';
+import { SignUpErrors } from "../../interfaces/interfaces";
+import { User } from '../../interfaces/interfaces';
 
 interface InputsAll {
     email: string;
