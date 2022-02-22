@@ -1,4 +1,4 @@
-import { SignUpErrors } from './SignUp.interfaces'
+import { SignUpErrors } from './SignUp.interfaces';
 
 export const errorDefault: SignUpErrors = {
     isError: false,

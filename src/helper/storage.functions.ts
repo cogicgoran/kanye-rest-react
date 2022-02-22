@@ -37,7 +37,7 @@ export function setCurrentUser(email: string) {
     localStorage.setItem('current-user', JSON.stringify({ email }));
 };
 
-export function setUsers(users: String) {
+export function setUsers(users: User[]) {
     localStorage.setItem('users', JSON.stringify(users));
 };
 
