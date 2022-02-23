@@ -12,15 +12,3 @@
     margin-bottom: 1em;
     font-size: 22px;
 }
-
-.form-login__btn-confirm {
-    padding: .5em 1em;
-    border-radius: 1em;
-    border: 2px solid rgb(248, 150, 133);
-    cursor: pointer;
-    transition: background-color 200ms;
-}
-
-.form-login__btn-confirm:hover {
-    background-color: rgb(248, 150, 133);
-}
