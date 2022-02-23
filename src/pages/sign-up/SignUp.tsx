@@ -6,6 +6,7 @@ import { PATHS } from '../../helper/Paths';
 import { getUsers, setCurrentUser, setUsers } from '../../helper/storage.functions';
 import { useForm } from 'react-hook-form';
 import { User } from '../../interfaces/interfaces';
+import ErrorMessage from '../../components/UI/form-error-message/FormErrorMessage';
 
 interface FormData {
   email: string;
@@ -22,17 +23,17 @@ function SignUp(): JSX.Element {
   });
 
   const emailErrors = [];
+  const passwordErrors = [];
+  const passwordConfirmErrors = [];
   for (const iterator in errors.email?.types) {
     if(iterator === 'required') emailErrors.push('Field required!');
     if(iterator === 'invalidEmail') emailErrors.push('Invalid email!');
   }
-  const passwordErrors = [];
   for (const iterator in errors.password?.types) {
     if(iterator === 'required') passwordErrors.push('Field required!');
     if(iterator === 'minLength') passwordErrors.push('Password must be at least 8 characters long!');
     if(iterator === 'characterTypes') passwordErrors.push('Password must contain at least one capital letter and at least one number!');
   }
-  const passwordConfirmErrors = [];
   for (const iterator in errors.passwordConfirm?.types) {
     if(iterator === 'required') passwordConfirmErrors.push('Field required!');
     if(iterator === 'matchingPassword') passwordConfirmErrors.push('Password are not matching!');
@@ -94,10 +95,6 @@ function SignUp(): JSX.Element {
       </div>
     </form>);
 
-};
-
-function ErrorMessage({ message }: { message: string }): JSX.Element {
-  return <div className={styles['form-error-validator']}>{message}</div>;
 };
 
 export default SignUp;

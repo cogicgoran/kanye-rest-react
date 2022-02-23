@@ -1,27 +1,42 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import styles from './Login.module.css';
 import { Link } from 'react-router-dom';
 import Button from '../../components/UI/button/Button';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../helper/Paths';
 import { findUserByEmailAndPassword, setCurrentUser } from '../../helper/storage.functions';
+import { useForm } from 'react-hook-form';
+import ErrorMessage from '../../components/UI/form-error-message/FormErrorMessage';
+
+interface FormData {
+    email: string;
+    password: string;
+}
 
 function Login(): JSX.Element {
-    const emailRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
+    const { register, handleSubmit, clearErrors, formState: { errors } } = useForm<FormData>({
+        mode: 'onSubmit',
+        reValidateMode: 'onSubmit',
+        criteriaMode: 'all'
+    });
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
-        event.preventDefault();
-        if (emailRef === null || passwordRef === null || emailRef.current == null || passwordRef.current === null){
-            alert("Some error with useRef references");  
-            return;
-        }
-        const email = emailRef.current.value;
-        const password = passwordRef.current.value;
-        const foundUser = findUserByEmailAndPassword(email, password);
+    const emailErrors = [];
+    const passwordErrors = [];
+    for (const iterator in errors.email?.types) {
+        if (iterator === 'required') emailErrors.push('Field required!');
+        if (iterator === 'invalidEmail') emailErrors.push('Invalid email!');
+    }
+    for (const iterator in errors.password?.types) {
+        if (iterator === 'required') passwordErrors.push('Field required!');
+        if (iterator === 'minLength') passwordErrors.push('Password must be at least 8 characters long!');
+        if (iterator === 'characterTypes') passwordErrors.push('Password must contain at least one capital letter and at least one number!');
+    }
+
+    function onSubmit(data: FormData): void {
+        const foundUser = findUserByEmailAndPassword(data.email, data.password);
         if (foundUser) {
-            setCurrentUser(email)
+            setCurrentUser(data.email)
             navigate(PATHS.HOME);
             return;
         }
@@ -30,12 +45,27 @@ function Login(): JSX.Element {
     };
 
     return (
-        <form className={styles['login-form']} onSubmit={handleSubmit}>
+        <form className={styles['login-form']} onSubmit={handleSubmit(onSubmit)} onChange={() => clearErrors()}>
             <div className={styles['login-form__field']}>
-                <input ref={emailRef} type="email" name="email" placeholder="example@example.com" />
+                <input {
+                    ...register('email', {
+                        required: true,
+                        validate: {
+                            invalidEmail: (value) => /\S+@\S+\.\S+/.test(value),
+                        }
+                    })} placeholder="example@example.com" />
+                {emailErrors.length > 0 && emailErrors.map(errorMessage => <ErrorMessage key={errorMessage} message={errorMessage} />)}
             </div>
             <div className={styles['login-form__field']}>
-                <input ref={passwordRef} type="password" name="password" placeholder="Password..." />
+                <input {
+                    ...register('password', {
+                        minLength: 8,
+                        required: true,
+                        validate: {
+                            characterTypes: (value) => /[A-Z]/.test(value) && /\d/.test(value),
+                        }
+                    })} placeholder="Password..." />
+                {passwordErrors.length > 0 && passwordErrors.map(errorMessage => <ErrorMessage key={errorMessage} message={errorMessage} />)}
             </div>
             <div className={styles['form-login__controls']}>
                 <Button type='submit'>Sign In</Button>
@@ -44,7 +74,7 @@ function Login(): JSX.Element {
                 Don't have an account? Sign Up <Link to='/sign-up'>here</Link>
             </div>
         </form>
-    );
+    )
 };
 
 export default Login;
