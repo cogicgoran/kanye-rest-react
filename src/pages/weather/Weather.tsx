@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import DisplayWeather from '../../components/weather/DisplayWeather';
 import styles from './Weather.module.css';
-import { useWeather } from './useWeather'
+import { useWeather } from './useWeather';
 
 function Weather(): JSX.Element {
     const { currentWeather, isLoading, isError, setForecastType } = useWeather();

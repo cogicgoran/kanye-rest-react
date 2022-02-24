@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { WeatherForecast } from '../../interfaces/interfaces';
 import axios from 'axios';
 import { getScructuredResponse, getUrl } from './Weather.functions';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { setWeatherToday as setReduxWeatherToday, setWeatherForecast as setReduxWeatherForecast } from '../../store/weather/weather';
 
-const STORAGE_WEATHER_EXPIRE_TIME = 1000 * 60 * 3;
+const STORAGE_WEATHER_EXPIRE_TIME = 1000 * 10; // 30 seconds
 
 interface WeatherObject {
     currentWeather: WeatherForecast | null;
@@ -26,6 +28,9 @@ interface Error {
 export type Forecast = 'today' | '3-day' | '7-day';
 
 export function useWeather(): WeatherObject {
+    const reduxCurrentWeather = useAppSelector((state) => state.weather.value);
+    const dispatch = useAppDispatch();
+
     const [currentWeather, setCurrentWeather] = useState<WeatherForecast | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState<Error | null>(null);
@@ -34,18 +39,34 @@ export function useWeather(): WeatherObject {
     function locationSuccess(position: GeolocationPosition): void {
         const { latitude, longitude } = position.coords;
         fetchWeather(latitude, longitude);
-    }
+    };
 
-    function setWeatherForecast(result: WeatherForecast, forecastType: Forecast, setToStorage?: boolean) {
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
+    }, [forecastType]);
+
+    function setWeatherForecast(result: WeatherForecast, forecastType: Forecast, setToStorage: boolean = false, time: number | false = false) {
         if (result.data instanceof Array && forecastType === '3-day') setCurrentWeather({ info: result.info, data: result.data.slice(0, 3) });
         if (result.data instanceof Array && forecastType === '7-day') setCurrentWeather({ info: result.info, data: result.data.slice(0, 7) });
-        if (setToStorage) localStorage.setItem('weather-forecast', JSON.stringify({ data: result, createdAt: Date.now() }));
-    }
+        if ( time === false ) {
+            dispatch(setReduxWeatherForecast({ data: result, createdAt: Date.now()}));
+        } else {
+            dispatch(setReduxWeatherForecast({ data: result, createdAt: time}));
+        }
+    };
 
-    function setWeatherToday(result: WeatherForecast, setToStorage?: boolean) {
+    function setWeatherToday(result: WeatherForecast, setToStorage: boolean = false, time: number | false = false) {
         setCurrentWeather(result);
-        if(setToStorage) localStorage.setItem('weather', JSON.stringify({ data: result, createdAt: Date.now() }));
-    }
+        if ( time === false ) {
+            dispatch(setReduxWeatherToday({ data: result, createdAt: Date.now() }));
+        } else {
+            dispatch(setReduxWeatherToday({ data: result, createdAt: time }));
+        }
+    };
+
+    function locationError(error: any): void {
+        setIsError(error);
+    };
 
     async function fetchWeather(latitude: number, longitude: number): Promise<void> {
         const url = getUrl(latitude, longitude, forecastType);
@@ -53,7 +74,7 @@ export function useWeather(): WeatherObject {
         setIsError(null);
         try {
             if (forecastType === 'today') {
-                const storedWeather = JSON.parse(localStorage.getItem('weather') as any);
+                const storedWeather = reduxCurrentWeather.weatherToday;
                 let result: WeatherForecast;
                 if (!storedWeather) {
                     result = getScructuredResponse(await axios.get(url), forecastType);
@@ -65,11 +86,11 @@ export function useWeather(): WeatherObject {
                         setWeatherToday(result, true);
                     } else {
                         result = storedWeather.data;
-                        setWeatherToday(result)
+                        setWeatherToday(result, false, storedWeather.createdAt)
                     }
                 }
             } else {
-                const storedForecast = JSON.parse(localStorage.getItem('weather-forecast') as any);
+                const storedForecast = reduxCurrentWeather.weatherForecast;
                 let result: WeatherForecast;
                 if (!storedForecast) {
                     result = getScructuredResponse(await axios.get(url), forecastType);
@@ -81,7 +102,7 @@ export function useWeather(): WeatherObject {
                         setWeatherForecast(result, forecastType, true);
                     } else {
                         result = storedForecast.data;
-                        setWeatherForecast(result, forecastType);
+                        setWeatherForecast(result, forecastType, false, storedForecast.createdAt);
                     }
                 }
             }
@@ -93,13 +114,6 @@ export function useWeather(): WeatherObject {
         }
     };
 
-    function locationError(error: any): void {
-        setIsError(error);
-    };
-
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
-    }, [forecastType]);
 
     return { currentWeather, isLoading, isError, setForecastType }
-}
+};
