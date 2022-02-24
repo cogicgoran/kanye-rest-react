@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { WeatherForecast, WeatherType, WeatherResponse } from '../../interfaces/interfaces';
+import { WeatherResponse } from '../../interfaces/interfaces';
 import type { RootState } from '../../store/store';
 
 interface WeatherState {

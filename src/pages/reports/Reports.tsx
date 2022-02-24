@@ -30,25 +30,25 @@ interface ReportsQuoteProps {
     count: number;
     time?: number;
     body: string;
-    createdAt: Date;
-    updatedAt: Date | null;
+    createdAt: string;
+    updatedAt: string | null;
     onCheckboxChange: (id: number, checked: boolean) => void;
     checked: boolean;
-}
+};
 
 function ReportsQuote({ body, count, createdAt, updatedAt, time: timeToFetch, id, onCheckboxChange, checked }: ReportsQuoteProps): JSX.Element {
     function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
         onCheckboxChange(id, event.target.checked);
-    }
+    };
 
     return <div className={styles['history__quote']}>
         <div className={styles.quoted}>{body}</div>
         <div>Count: {count}</div>
-        <div>Created At: {new Date(createdAt).toLocaleString()}</div>
-        <div>{updatedAt && `Updated At: ${new Date(updatedAt).toLocaleString()}`}</div>
+        <div>Created At: {createdAt}</div>
+        <div>{updatedAt && `Updated At: ${updatedAt}`}</div>
         <div>Time to Fetch: {timeToFetch ? `${timeToFetch}ms` : "Unknown"}</div>
         <input type='checkbox' checked={checked} onChange={handleChange} />
     </div>
-}
+};
 
 export default Reports;

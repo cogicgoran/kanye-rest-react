@@ -14,6 +14,7 @@ import { PATHS } from './helper/Paths';
 import { getCurrentUser } from './helper/storage.functions';
 import { useAppDispatch, useAppSelector } from './hooks/hooks';
 import { setWeatherToday as setReduxWeatherToday, setWeatherForecast as setReduxWeatherForecast } from './store/weather/weather';
+import { pushPreviousQuotes, setQuotes } from './store/quotes/quotes';
 
 
 function App(): JSX.Element {
@@ -40,15 +41,22 @@ function useWeatherStore() {
   const dispatch = useAppDispatch();
   const weatherToday = useAppSelector((state) => state.weather.value.weatherToday);
   const weatherForecast = useAppSelector((state) => state.weather.value.weatherForecast);
+  const quotes = useAppSelector((state) => state.quotes.value.quotes);
 
   function onAppInit() {
     try {
       const weatherTodayStringified = localStorage.getItem('weather');
       const weatherForecastStringified = localStorage.getItem('weather-forecast');
+      const quotesStringified = localStorage.getItem('quotes');
+      const prevQuotesStringified = localStorage.getItem('previous-quotes');
       const weatherToday = JSON.parse(weatherTodayStringified as string);
       const weatherForecast = JSON.parse(weatherForecastStringified as string);
+      const quotes = JSON.parse(quotesStringified as string);
+      const prevQuotes = JSON.parse(prevQuotesStringified as string);
       if (weatherToday) dispatch(setReduxWeatherToday(weatherToday));
       if (weatherForecast) dispatch(setReduxWeatherForecast(weatherForecast));
+      if (quotes) dispatch(setQuotes(quotes));
+      if (prevQuotes) dispatch(pushPreviousQuotes(prevQuotes));
     } catch (error) {
       alert("Error when parsing stored values on weather page init");
     }
@@ -58,8 +66,10 @@ function useWeatherStore() {
     try {
       const weatherTodayStringified = JSON.stringify(weatherToday);
       const weatherForecastStringified = JSON.stringify(weatherForecast);
+      const quotesStringified = JSON.stringify(quotes);
       localStorage.setItem("weather", weatherTodayStringified);
       localStorage.setItem("weather-forecast", weatherForecastStringified);
+      localStorage.setItem("quotes", quotesStringified);
     } catch (error) {
       alert("Error before weather page close");
     }

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { setQuotes as storageSetQuotes } from "../../helper/storage.functions";
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { cutQuotes, cutPrevQuotes } from '../../store/quotes/quotes';
 
 interface QuoteComplete {
     id: number;
     count: number;
     time?: number;
     body: string;
-    createdAt: Date;
-    updatedAt: Date | null;
+    createdAt: string;
+    updatedAt: string | null;
 }
 
 interface ReportsReturn {
@@ -20,7 +21,9 @@ interface ReportsReturn {
 }
 
 export function useReports(): ReportsReturn {
-    const [quotes, setQuotes] = useState(JSON.parse(localStorage.getItem("quotes") as string) || []);
+    const dispatch = useAppDispatch();
+    const prevQuotes = useAppSelector((state) => state.quotes.value.prevQuotes);
+    const quotesAll = useAppSelector((state) => state.quotes.value.quotes);
     const [checkedIds, setCheckedIds] = useState<Array<number>>([]);
     const [isCheckedSelectAll, setIsCheckedSelectAll] = useState(false);
 
@@ -38,7 +41,7 @@ export function useReports(): ReportsReturn {
     function handleSelectAllChange(event: React.ChangeEvent<HTMLInputElement>): void {
         if (event.target.checked) {
             setIsCheckedSelectAll(true);
-            setCheckedIds(quotes.map((quote: QuoteComplete) => quote.id));
+            setCheckedIds(quotesAll.map((quote: QuoteComplete) => quote.id));
         } else {
             setIsCheckedSelectAll(false);
             setCheckedIds([]);
@@ -46,22 +49,22 @@ export function useReports(): ReportsReturn {
     }
 
     function handleRemoveQuotes() {
-        const last5Quotes: QuoteComplete[] = JSON.parse(localStorage.getItem("previous-quotes") as string) || [];
         checkedIds.forEach(checkedId => {
-            quotes.splice(quotes.indexOf(quotes.find((quote: QuoteComplete): boolean => quote.id === checkedId)), 1);
-            const item: QuoteComplete | undefined = last5Quotes.find((item: QuoteComplete): boolean => item.id === checkedId);
-            if (item) {
-                const id: number | undefined = last5Quotes.indexOf(item);
-                last5Quotes.splice(id, 1);
-                localStorage.setItem("previous-quotes", JSON.stringify(last5Quotes));
+            const foundQuote = quotesAll.find((quote: QuoteComplete): boolean => quote.id === checkedId);
+            const idx = quotesAll.indexOf(foundQuote);
+            if (idx !== -1) {
+                dispatch(cutQuotes(idx))
+            }
+            const foundPrevQuote = prevQuotes.find((item: QuoteComplete): boolean => item.id === checkedId);
+            const foundPrevIdx = prevQuotes.indexOf(foundPrevQuote);
+            if( foundPrevIdx !== -1 ) {
+                dispatch(cutPrevQuotes(foundPrevIdx))
             }
         });
 
-        setQuotes([...quotes]);
-        storageSetQuotes(quotes);
         setCheckedIds([]);
-        setIsCheckedSelectAll(false)
+        setIsCheckedSelectAll(false);
     }
 
-    return { quotes, checkedIds, onCheckboxChange, handleSelectAllChange, isCheckedSelectAll, handleRemoveQuotes }
+    return { quotes: quotesAll, checkedIds, onCheckboxChange, handleSelectAllChange, isCheckedSelectAll, handleRemoveQuotes }
 }

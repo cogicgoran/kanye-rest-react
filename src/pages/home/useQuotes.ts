@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
-import { getPreviousQuotes, getQuotes, setPreviousQuotes, setQuotes as storageSetQuotes } from '../../helper/storage.functions';
+import { getQuotes } from '../../helper/storage.functions';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { pushPreviousQuotes, pushQuote, editQuote } from '../../store/quotes/quotes';
 
 interface Quote {
     quote:string;
@@ -18,8 +20,8 @@ interface QuoteComplete {
     count: number;
     time?: number;
     body: string;
-    createdAt: Date;
-    updatedAt: Date | null;
+    createdAt: string;
+    updatedAt: string | null;
 }
 
 interface LocationPath {
@@ -29,17 +31,18 @@ interface LocationPath {
 }
 
 export function useQuotes():ReturnQuotes {
-    const url = 'https://api.kanye.rest/';
+    const dispatch = useAppDispatch();
+    const prevQuotes = useAppSelector((state) => state.quotes.value.prevQuotes);
+    const quotesAll = useAppSelector((state) => state.quotes.value.quotes);
     const [quotes, setQuotes] = useState<Array<Quote>>([]);
     const location = useLocation() as LocationPath;
+    const url = 'https://api.kanye.rest/';
     let fetchCounter: number = 0;
     let fetchQuotes: Array<Quote> = [];
 
     useEffect(() => {
-        const allQuotes = getQuotes();
-
-        if(location && location.state?.fromReports && allQuotes.length > 4) {
-            setQuotes(getPreviousQuotes());
+        if(location && location.state?.fromReports && quotesAll.length > 4) {
+            setQuotes(prevQuotes);
         } else {
             fetchTasks();
         }
@@ -51,44 +54,40 @@ export function useQuotes():ReturnQuotes {
         });
     };
 
-    function updateStorage(quotesStorage: QuoteComplete[], quote: Quote): QuoteComplete {
-        const matchedQuote = quotesStorage.find(storedQuote => {
+    function updateStorage(quote: Quote): QuoteComplete {
+        
+        const matchedIndex = quotesAll.indexOf((storedQuote: any) => {
             return storedQuote.body === quote.quote;
-        });
-        if (matchedQuote) {
-            matchedQuote.count = matchedQuote.count + 1;
-            matchedQuote.time = quote.time;
-            matchedQuote.updatedAt = new Date();
-            return matchedQuote
-
+        })
+        if (matchedIndex !== -1) {
+            dispatch(editQuote({matchedIndex, time:quote.time}))
+            return quotesAll[matchedIndex]
         } else {
             const newQuote: QuoteComplete = {
                 body: quote.quote,
                 count: 1,
-                createdAt: new Date(),
+                createdAt: new Date().toLocaleString(),
                 updatedAt: null,
                 time: quote.time,
                 id: Math.round(Math.random() * 100000)
             };
-            quotesStorage.push(newQuote);
+            dispatch(pushQuote(newQuote))
             return newQuote;
         }
     };
 
     function handleNewQuotes(quote : Quote): void {
-        const quotesStorage = getQuotes();
-        const updatedQuote = updateStorage(quotesStorage, quote);
+
+        const updatedQuote = updateStorage(quote);
 
         appendQuoteToDisplay(quote);
         fetchQuotes.push({quote: updatedQuote.body, id: updatedQuote.id});
         fetchCounter++;
         if (fetchCounter === 5) {
-            setPreviousQuotes(fetchQuotes);
+            dispatch(pushPreviousQuotes(fetchQuotes));
             fetchCounter = 0;
             fetchQuotes = [];
         }
-        localStorage.setItem("quotes", JSON.stringify(quotesStorage));
-        storageSetQuotes(quotesStorage);
     };
 
     function getPromiseArray(numberOfFetches: number = 5): Promise<any>[] {
