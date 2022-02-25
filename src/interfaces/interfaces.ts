@@ -25,4 +25,19 @@ export interface WeatherType {
     dt: number;
 }
 
+export interface Quote {
+    quote:string;
+    id:number;
+    time?: number | undefined;
+}
+
+export interface QuoteComplete {
+    id: number;
+    count: number;
+    time?: number;
+    body: string;
+    createdAt: string;
+    updatedAt: string | null;
+}
+
 export type Forecast = 'today' | '4-day' | '7-day';

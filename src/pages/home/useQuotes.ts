@@ -55,11 +55,14 @@ export function useQuotes():ReturnQuotes {
     };
 
     function updateStorage(quote: Quote): QuoteComplete {
-        
-        const matchedIndex = quotesAll.indexOf((storedQuote: any) => {
+        let matchedIndex;
+        const matchedQuote = quotesAll.find((storedQuote: QuoteComplete) => {
             return storedQuote.body === quote.quote;
         })
-        if (matchedIndex !== -1) {
+        if( matchedQuote) {
+            matchedIndex = quotesAll.indexOf(matchedQuote);
+        }
+        if (matchedIndex !== -1 && matchedIndex !== undefined)  {
             dispatch(editQuote({matchedIndex, time:quote.time}))
             return quotesAll[matchedIndex]
         } else {

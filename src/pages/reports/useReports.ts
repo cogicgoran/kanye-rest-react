@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { cutQuotes, cutPrevQuotes } from '../../store/quotes/quotes';
-
-interface QuoteComplete {
-    id: number;
-    count: number;
-    time?: number;
-    body: string;
-    createdAt: string;
-    updatedAt: string | null;
-}
+import { Quote, QuoteComplete } from '../../interfaces/interfaces';
 
 interface ReportsReturn {
     quotes: QuoteComplete[];
@@ -56,7 +48,7 @@ export function useReports(): ReportsReturn {
             if (foundQuote) {
                 dispatch(cutQuotes(foundQuote.id));
             }
-            const foundPrevQuote = prevQuotes.find((item: QuoteComplete): boolean => item.id === checkedId);
+            const foundPrevQuote = prevQuotes.find((item: Quote): boolean => item.id === checkedId);
             if( foundPrevQuote ) {
                 dispatch(cutPrevQuotes(foundPrevQuote.id));
             }
