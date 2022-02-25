@@ -34,17 +34,12 @@ export const quotesSlice = createSlice({
             state.value.quotes[action.payload.matchedIndex].updatedAt = new Date().toLocaleString();
         },
         cutQuotes: (state, action: PayloadAction<any>) => {
-            const startIdx = action.payload; 
-            const newValue = state.value.quotes.slice(0, startIdx).concat(state.value.quotes.slice(startIdx+1));
-            console.log("all:", newValue);
-            
-            state.value.quotes = newValue;
+            const id = action.payload;
+            state.value.quotes = state.value.quotes.filter(quote => quote.id !== id);
         },
         cutPrevQuotes: (state, action: PayloadAction<any>) => {
-            const startIdx = action.payload; 
-            const newValue = state.value.prevQuotes.slice(0, startIdx).concat(state.value.prevQuotes.slice(startIdx+1));
-            console.log("prev:", newValue);
-            state.value.prevQuotes = newValue;
+            const id = action.payload;
+            state.value.prevQuotes = state.value.prevQuotes.filter(prevQuote => prevQuote.id !== id);
         }
     },
 })

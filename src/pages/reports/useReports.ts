@@ -51,14 +51,14 @@ export function useReports(): ReportsReturn {
     function handleRemoveQuotes() {
         checkedIds.forEach(checkedId => {
             const foundQuote = quotesAll.find((quote: QuoteComplete): boolean => quote.id === checkedId);
-            const idx = quotesAll.indexOf(foundQuote);
-            if (idx !== -1) {
-                dispatch(cutQuotes(idx))
+            console.log(foundQuote);
+            
+            if (foundQuote) {
+                dispatch(cutQuotes(foundQuote.id));
             }
             const foundPrevQuote = prevQuotes.find((item: QuoteComplete): boolean => item.id === checkedId);
-            const foundPrevIdx = prevQuotes.indexOf(foundPrevQuote);
-            if( foundPrevIdx !== -1 ) {
-                dispatch(cutPrevQuotes(foundPrevIdx))
+            if( foundPrevQuote ) {
+                dispatch(cutPrevQuotes(foundPrevQuote.id));
             }
         });
 

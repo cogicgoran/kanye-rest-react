@@ -82,7 +82,7 @@ function useWeatherStore() {
   useEffect(() => {
     window.addEventListener('beforeunload', onAppClose);
     return () => window.removeEventListener('beforeunload', onAppClose);
-  }, [weatherToday, weatherForecast]);
+  }, [weatherToday, weatherForecast, quotes]);
   
 }
 

@@ -41,7 +41,7 @@ export function useQuotes():ReturnQuotes {
     let fetchQuotes: Array<Quote> = [];
 
     useEffect(() => {
-        if(location && location.state?.fromReports && quotesAll.length > 4) {
+        if(location && location.state?.fromReports && quotesAll.length > 4 && prevQuotes.length > 0 ) {
             setQuotes(prevQuotes);
         } else {
             fetchTasks();
@@ -71,15 +71,13 @@ export function useQuotes():ReturnQuotes {
                 time: quote.time,
                 id: Math.round(Math.random() * 100000)
             };
-            dispatch(pushQuote(newQuote))
+            dispatch(pushQuote(newQuote));
             return newQuote;
         }
     };
 
     function handleNewQuotes(quote : Quote): void {
-
         const updatedQuote = updateStorage(quote);
-
         appendQuoteToDisplay(quote);
         fetchQuotes.push({quote: updatedQuote.body, id: updatedQuote.id});
         fetchCounter++;
