@@ -43,8 +43,6 @@ export function useReports(): ReportsReturn {
     function handleRemoveQuotes() {
         checkedIds.forEach(checkedId => {
             const foundQuote = quotesAll.find((quote: QuoteComplete): boolean => quote.id === checkedId);
-            console.log(foundQuote);
-            
             if (foundQuote) {
                 dispatch(cutQuotes(foundQuote.id));
             }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { getCurrentUser } from '../../helper/storage.functions';
+import { useAppSelector } from '../../hooks/hooks';
 
 interface Props {
     disallowAuthorized?: boolean;
@@ -9,9 +9,9 @@ interface Props {
 }
 
 function ProtectedRoute({disallowAuthorized, redirectTo, component:Component}: Props): JSX.Element {
-    const user = getCurrentUser();
-    if (disallowAuthorized && !user) return <Component />;
-    if (!disallowAuthorized && user) return <Component />;
+    const currentUser = useAppSelector((state) => state.currentUser.user );
+    if (disallowAuthorized && !currentUser) return <Component />;
+    if (!disallowAuthorized && currentUser) return <Component />;
     return <Navigate to={redirectTo}/>;
 };
 

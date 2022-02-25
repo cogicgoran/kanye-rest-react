@@ -7,6 +7,8 @@ import { PATHS } from '../../helper/Paths';
 import { findUserByEmailAndPassword, setCurrentUser } from '../../helper/storage.functions';
 import { useForm } from 'react-hook-form';
 import ErrorMessage from '../../components/UI/form-error-message/FormErrorMessage';
+import { useAppDispatch } from '../../hooks/hooks';
+import { setReduxCurrentUser } from '../../store/current-user/currentUser';
 
 interface FormData {
     email: string;
@@ -15,6 +17,7 @@ interface FormData {
 
 function Login(): JSX.Element {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
     const { register, handleSubmit, clearErrors, formState: { errors } } = useForm<FormData>({
         mode: 'onSubmit',
         reValidateMode: 'onSubmit',
@@ -36,7 +39,8 @@ function Login(): JSX.Element {
     function onSubmit(data: FormData): void {
         const foundUser = findUserByEmailAndPassword(data.email, data.password);
         if (foundUser) {
-            setCurrentUser(data.email)
+            setCurrentUser(data.email);
+            dispatch(setReduxCurrentUser(data.email));
             navigate(PATHS.HOME);
             return;
         }

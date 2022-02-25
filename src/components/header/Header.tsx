@@ -5,6 +5,8 @@ import Button from '../UI/button/Button';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../helper/Paths';
 import { removeCurrentUser } from '../../helper/storage.functions';
+import { removeReduxCurrentUser } from '../../store/current-user/currentUser';
+import { useAppDispatch } from '../../hooks/hooks';
 
 interface Props {
     fromReports: boolean;
@@ -12,8 +14,10 @@ interface Props {
 
 function Header({fromReports}: Props): JSX.Element {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     function handleLogoutClick(): void{
+        dispatch(removeReduxCurrentUser());
         removeCurrentUser();
         navigate(PATHS.LOGIN);
     };

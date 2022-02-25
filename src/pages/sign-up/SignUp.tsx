@@ -7,7 +7,7 @@ import { getUsers, setCurrentUser, setUsers } from '../../helper/storage.functio
 import { useForm } from 'react-hook-form';
 import { User } from '../../interfaces/interfaces';
 import ErrorMessage from '../../components/UI/form-error-message/FormErrorMessage';
-import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch } from '../../hooks/hooks';
 import { setReduxCurrentUser } from '../../store/current-user/currentUser';
 
 interface FormData {
