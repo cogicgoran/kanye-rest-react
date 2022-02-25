@@ -5,7 +5,7 @@ import { getScructuredResponse, getUrl } from './Weather.functions';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { setWeatherToday as setReduxWeatherToday, setWeatherForecast as setReduxWeatherForecast } from '../../store/weather/weather';
 
-const STORAGE_WEATHER_EXPIRE_TIME = 1000 * 10; // 30 seconds
+const STORAGE_WEATHER_EXPIRE_TIME = 1000 * 30; // 30 seconds
 
 interface WeatherObject {
     currentWeather: WeatherForecast | null;

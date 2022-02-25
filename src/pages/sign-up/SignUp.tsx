@@ -7,6 +7,8 @@ import { getUsers, setCurrentUser, setUsers } from '../../helper/storage.functio
 import { useForm } from 'react-hook-form';
 import { User } from '../../interfaces/interfaces';
 import ErrorMessage from '../../components/UI/form-error-message/FormErrorMessage';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { setReduxCurrentUser } from '../../store/current-user/currentUser';
 
 interface FormData {
   email: string;
@@ -15,6 +17,7 @@ interface FormData {
 }
 
 function SignUp(): JSX.Element {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate();
   const { register, getValues, handleSubmit, clearErrors, formState: { errors } } = useForm<FormData>({
     mode: 'onSubmit',
@@ -44,6 +47,7 @@ function SignUp(): JSX.Element {
     users.push({ email, password });
     setUsers(users);
     setCurrentUser(email);
+    dispatch(setReduxCurrentUser(email));
     navigate(PATHS.HOME);
   };
 

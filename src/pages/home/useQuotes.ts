@@ -1,34 +1,19 @@
 import { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
-import { getQuotes } from '../../helper/storage.functions';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { pushPreviousQuotes, pushQuote, editQuote } from '../../store/quotes/quotes';
-
-interface Quote {
-    quote:string;
-    id:number;
-    time?: number | undefined;
-}
+import { QuoteComplete, Quote } from '../../interfaces/interfaces';
 
 interface ReturnQuotes {
     quotes: Array<Quote>;
     fetchTasks:() => Promise<void>;
-}
-
-interface QuoteComplete {
-    id: number;
-    count: number;
-    time?: number;
-    body: string;
-    createdAt: string;
-    updatedAt: string | null;
-}
+};
 
 interface LocationPath {
     state: {
         fromReports: string;
     }
-}
+};
 
 export function useQuotes():ReturnQuotes {
     const dispatch = useAppDispatch();
@@ -63,8 +48,8 @@ export function useQuotes():ReturnQuotes {
             matchedIndex = quotesAll.indexOf(matchedQuote);
         }
         if (matchedIndex !== -1 && matchedIndex !== undefined)  {
-            dispatch(editQuote({matchedIndex, time:quote.time}))
-            return quotesAll[matchedIndex]
+            dispatch(editQuote({matchedIndex, time:quote.time}));
+            return quotesAll[matchedIndex];
         } else {
             const newQuote: QuoteComplete = {
                 body: quote.quote,
